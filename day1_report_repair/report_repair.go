@@ -3,16 +3,16 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 func main() {
 	data, err := ioutil.ReadFile("input.txt")
-    if err != nil {
-        fmt.Println("File reading error", err)
-        return
-    }
+	if err != nil {
+		fmt.Println("File reading error", err)
+		return
+	}
 	numbers := strings.Split(string(data), "\n")
 	numbers = numbers[:len(numbers)-1]
 	part1(numbers)
@@ -53,7 +53,7 @@ func part2(numbers []string) {
 
 	for index1, num1 := range numList {
 		for _, num2 := range numList[index1:] {
-			if _, ok := numSet[2020 - num1 - num2]; ok {
+			if _, ok := numSet[2020-num1-num2]; ok {
 				fmt.Println(num1 * num2 * (2020 - num1 - num2))
 				return
 			}

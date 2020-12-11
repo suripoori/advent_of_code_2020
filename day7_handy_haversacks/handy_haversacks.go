@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 func main() {
 	data, err := ioutil.ReadFile("input.txt")
 	if err != nil {
 		fmt.Println("File reading error", err)
-        return
+		return
 	}
 	bagDatas := strings.Split(string(data), "\n")
 	bagMaps := getBagMaps(bagDatas)
@@ -19,9 +19,9 @@ func main() {
 	fmt.Println(part2(bagMaps, "shiny gold"))
 }
 
-func part1(bagMaps map[string]map[string]int, bagColorOfInterest string) (int) {
+func part1(bagMaps map[string]map[string]int, bagColorOfInterest string) int {
 	count := 0
-	for bagColor, _ := range(bagMaps) {
+	for bagColor := range bagMaps {
 		if canBagHoldBag(bagMaps, bagColor, bagColorOfInterest) {
 			count++
 		}
@@ -29,8 +29,8 @@ func part1(bagMaps map[string]map[string]int, bagColorOfInterest string) (int) {
 	return count
 }
 
-func canBagHoldBag(bagMaps map[string]map[string]int, bagInQuestion string, bagColorOfInterest string) (bool) {
-	for bagColor, _ := range(bagMaps[bagInQuestion]) {
+func canBagHoldBag(bagMaps map[string]map[string]int, bagInQuestion string, bagColorOfInterest string) bool {
+	for bagColor := range bagMaps[bagInQuestion] {
 		if bagColor == bagColorOfInterest {
 			return true
 		}
@@ -41,25 +41,25 @@ func canBagHoldBag(bagMaps map[string]map[string]int, bagInQuestion string, bagC
 	return false
 }
 
-func part2(bagMaps map[string]map[string]int, bagColorOfInterest string) (int) {
+func part2(bagMaps map[string]map[string]int, bagColorOfInterest string) int {
 	totalBagCount := getTotalBagCount(bagMaps, bagColorOfInterest)
 	// Since we only want to know how many total bags must be present inside the 1 shiny gold bag,
 	// we subtract 1 from our total here.
 	return totalBagCount - 1
 }
 
-func getTotalBagCount(bagMaps map[string]map[string]int, bagColorOfInterest string) (int) {
+func getTotalBagCount(bagMaps map[string]map[string]int, bagColorOfInterest string) int {
 	totalCount := 1
-	for bagColor, count := range(bagMaps[bagColorOfInterest]) {
-		totalCount += count * getTotalBagCount(bagMaps, bagColor) 
+	for bagColor, count := range bagMaps[bagColorOfInterest] {
+		totalCount += count * getTotalBagCount(bagMaps, bagColor)
 	}
 	return totalCount
 }
 
-func getBagMaps(bagDatas []string) (map[string]map[string]int) {
+func getBagMaps(bagDatas []string) map[string]map[string]int {
 	var bagMaps = map[string]map[string]int{}
 
-	for _, bagData := range(bagDatas) {
+	for _, bagData := range bagDatas {
 		if len(bagData) == 0 {
 			break
 		}
@@ -67,7 +67,7 @@ func getBagMaps(bagDatas []string) (map[string]map[string]int) {
 		bagColor := strings.Trim(strings.Split(bagData, "bags")[0], " ")
 		bagContents := strings.Trim(strings.Split(bagData, "contain")[1], " ")
 		bagCounts := make(map[string]int)
-		for _, bag := range(strings.Split(bagContents, "bag")) {
+		for _, bag := range strings.Split(bagContents, "bag") {
 			bagContent := strings.Trim(bag, "s")
 			bagContent = strings.Trim(bagContent, ",")
 			bagContent = strings.Trim(bagContent, " ")

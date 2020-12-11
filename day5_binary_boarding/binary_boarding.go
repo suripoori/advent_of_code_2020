@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"io/ioutil"
+	"strings"
 )
 
 func main() {
 	data, err := ioutil.ReadFile("input.txt")
 	if err != nil {
 		fmt.Println("File reading error", err)
-        return
+		return
 	}
 	seats := strings.Split(string(data), "\n")
 	maxSeatId, mySeatId := part1and2(seats)
@@ -19,17 +19,17 @@ func main() {
 }
 
 func max(a, b int) int {
-    if a > b {
-        return a
-    }
-    return b
+	if a > b {
+		return a
+	}
+	return b
 }
 
 func getSeatId(seat string) int {
 	row := seat[:8]
 	minRow := 0
 	maxRow := 128
-	for _, c := range(row) {
+	for _, c := range row {
 		if string(c) == string('B') {
 			minRow = int((minRow + maxRow) / 2)
 		} else if string(c) == string('F') {
@@ -39,7 +39,7 @@ func getSeatId(seat string) int {
 	rowNum := minRow
 	minCol := 0
 	maxCol := 8
-	for _, c := range(seat[7:]) {
+	for _, c := range seat[7:] {
 		if string(c) == string('R') {
 			minCol = int((minCol + maxCol) / 2)
 		} else if string(c) == string('L') {
@@ -47,14 +47,14 @@ func getSeatId(seat string) int {
 		}
 	}
 	colNum := minCol
-	seatId := rowNum * 8 + colNum
+	seatId := rowNum*8 + colNum
 	return seatId
 }
 
 func part1and2(seats []string) (int, int) {
 	maxSeatId := 0
 	allSeatIds := make(map[int]bool)
-	for _, seat := range(seats[:len(seats)-1]) {
+	for _, seat := range seats[:len(seats)-1] {
 		seatId := getSeatId(seat)
 		maxSeatId = max(maxSeatId, seatId)
 		allSeatIds[seatId] = true
@@ -77,5 +77,5 @@ func part1and2(seats []string) (int, int) {
 		// then that is mySeatId
 		return maxSeatId, i
 	}
-	return -1, -1 
+	return -1, -1
 }

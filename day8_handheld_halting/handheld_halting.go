@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 func main() {
 	data, err := ioutil.ReadFile("input.txt")
 	if err != nil {
 		fmt.Println("File reading error", err)
-        return
+		return
 	}
 	instructions := strings.Split(string(data), "\n")
 	instructionList := getInstructionList(instructions)
@@ -20,18 +20,18 @@ func main() {
 }
 
 type Instruction struct {
-	index int
+	index     int
 	operation string
-	argument int
+	argument  int
 }
 
-func part1(instructionList []Instruction) (int) {
+func part1(instructionList []Instruction) int {
 	acc, _ := getAccValue(0, instructionList)
 	return acc
 }
 
-func part2(instructionList []Instruction) (int) {
-	for index, instruction := range(instructionList) {
+func part2(instructionList []Instruction) int {
+	for index, instruction := range instructionList {
 		if instruction.operation == "jmp" {
 			newInstructionList := make([]Instruction, len(instructionList))
 			copy(newInstructionList, instructionList)
@@ -75,15 +75,15 @@ func getAccValue(acc int, instructionList []Instruction) (int, int) {
 			ip++
 		case "jmp":
 			ip += instruction.argument
-		} 
+		}
 	}
 	return acc, ip
 }
 
-func getInstructionList(instructions []string) ([]Instruction) {
+func getInstructionList(instructions []string) []Instruction {
 	var output = []Instruction{}
 
-	for index, instruction := range(instructions) {
+	for index, instruction := range instructions {
 		if len(instruction) == 0 {
 			continue
 		}

@@ -2,29 +2,29 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"io/ioutil"
-	"strings"
 	"sort"
+	"strconv"
+	"strings"
 )
 
 func main() {
 	data, err := ioutil.ReadFile("input.txt")
 	if err != nil {
 		fmt.Println("File reading error", err)
-        return
+		return
 	}
 	numbers := strings.Split(string(data), "\n")
 	numbers = numbers[:len(numbers)-1]
 	numbersList := make([]int, 0)
-	for _, number := range(numbers) {
+	for _, number := range numbers {
 		intNumber, err := strconv.Atoi(number)
 		if err != nil {
 			fmt.Println("Could not convert value to int: ", number)
 		}
 		numbersList = append(numbersList, intNumber)
 	}
-	
+
 	fmt.Println(part1(numbersList))
 	fmt.Println(numWays(numbersList))
 }
@@ -40,7 +40,7 @@ func getOneJoltTwoJoltThreeJolt(numbersList []int) (int, int, int) {
 	deviceJolt := numbersList[len(numbersList)-1] + 3
 	numbersList = append(numbersList, deviceJolt)
 	lastNumber := 0
-	for _, number := range(numbersList) {
+	for _, number := range numbersList {
 		switch number - lastNumber {
 		case 0:
 			fmt.Println("Same joltage numbers!")
@@ -60,30 +60,30 @@ func getOneJoltTwoJoltThreeJolt(numbersList []int) (int, int, int) {
 	return oneJolt, twoJolt, threeJolt
 }
 
-func part1(numbersList []int) (int) {
+func part1(numbersList []int) int {
 	oneJolt, _, threeJolt := getOneJoltTwoJoltThreeJolt(numbersList)
 	return oneJolt * threeJolt
 }
 
-func numWays(numbersList []int) (int) {
+func numWays(numbersList []int) int {
 	sort.Ints(numbersList)
 	numbersList = append(make([]int, 1), numbersList...)
-	numbersList = append(numbersList, numbersList[len(numbersList)-1] + 3)
+	numbersList = append(numbersList, numbersList[len(numbersList)-1]+3)
 	ways := make([]int, len(numbersList))
 	exists := make(map[int]int)
-	for index, number := range(numbersList) {
+	for index, number := range numbersList {
 		exists[number] = index
 	}
 	// There's only one way to get to the device
 	// from the previous adapter.
 	// But there can be up to 3 ways to get to previous adapter
-	// if all 3 values exist. 
+	// if all 3 values exist.
 	ways[len(numbersList)-1] = 1
 	for i := len(numbersList) - 2; i >= 0; i-- {
 		totalWays := 0
 		for j := 1; j <= 3; j++ {
-			if index, ok := exists[numbersList[i] + j]; ok {
-				// ways[index] should already be filled by the 
+			if index, ok := exists[numbersList[i]+j]; ok {
+				// ways[index] should already be filled by the
 				// time we get here because index is always > i
 				totalWays += ways[index]
 			}

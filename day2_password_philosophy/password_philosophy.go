@@ -1,18 +1,18 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"strings"
 	"io/ioutil"
 	"strconv"
-	"errors"
+	"strings"
 )
 
 func main() {
 	data, err := ioutil.ReadFile("input.txt")
 	if err != nil {
 		fmt.Println("File reading error", err)
-        return
+		return
 	}
 	strData := strings.Split(string(data), "\n")
 	part1(strData)
@@ -38,7 +38,7 @@ func parseRow(str string) (int, int, string, string, error) {
 
 func part1(strData []string) {
 	validPasswordCount := 0
-	for _, str := range(strData) {
+	for _, str := range strData {
 		minNum, maxNum, ch, password, err := parseRow(str)
 		if err != nil {
 			fmt.Print("Failing part 1")
@@ -62,7 +62,7 @@ func part1(strData []string) {
 
 func part2(strData []string) {
 	validPasswordCount := 0
-	for _, str := range(strData) {
+	for _, str := range strData {
 		firstIndex, secondIndex, ch, password, err := parseRow(str)
 		if err != nil {
 			fmt.Print("Failing part 1")
@@ -74,7 +74,7 @@ func part2(strData []string) {
 		secondIndex--
 
 		validPass := false
-		for _, index := range([]int{firstIndex, secondIndex}) {
+		for _, index := range []int{firstIndex, secondIndex} {
 			if string(password[index]) == ch {
 				if validPass {
 					validPass = false

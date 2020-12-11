@@ -1,18 +1,18 @@
 package main
 
 import (
+	"encoding/hex"
 	"fmt"
 	"io/ioutil"
-	"strings"
 	"strconv"
-	"encoding/hex"
+	"strings"
 )
 
 func main() {
 	data, err := ioutil.ReadFile("input.txt")
 	if err != nil {
 		fmt.Println("File reading error", err)
-        return
+		return
 	}
 	passports := strings.Split(string(data), "\n\n")
 	fmt.Println(part1(passports))
@@ -20,12 +20,12 @@ func main() {
 }
 
 func isValid(passport string, validateData bool) bool {
-	
+
 	requiredKeys := []string{"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"} // skip cid
 
 	fields := strings.Split(passport, "\n")
 	passportKeyValues := make([]string, 0)
-	for _, field := range(fields) {
+	for _, field := range fields {
 		if strings.Contains(field, " ") {
 			passportKeyValues = append(passportKeyValues, strings.Split(field, " ")...)
 		} else {
@@ -34,7 +34,7 @@ func isValid(passport string, validateData bool) bool {
 	}
 
 	passportKeys := make(map[string]string)
-	for _, keyValue := range(passportKeyValues) {
+	for _, keyValue := range passportKeyValues {
 		if strings.Contains(keyValue, ":") {
 			key := strings.Split(keyValue, ":")[0]
 			value := strings.Split(keyValue, ":")[1]
@@ -42,7 +42,7 @@ func isValid(passport string, validateData bool) bool {
 		}
 	}
 
-	for _, requiredKey := range(requiredKeys) {
+	for _, requiredKey := range requiredKeys {
 		value, present := passportKeys[requiredKey]
 		if !present {
 			return false
@@ -100,7 +100,7 @@ func isValidData(key string, data string) bool {
 		} else if string(data[len(data)-2:]) == string("in") {
 			return value >= 59 && value <= 76
 		}
-		fmt.Println("Unknown height") 
+		fmt.Println("Unknown height")
 		return false
 	case "hcl":
 		if string(data[0]) != string('#') {
@@ -135,7 +135,7 @@ func isValidData(key string, data string) bool {
 			return false
 		}
 		return true
-	default: 
+	default:
 		fmt.Println("Unknown key")
 		return true
 	}
@@ -143,7 +143,7 @@ func isValidData(key string, data string) bool {
 
 func part1(passports []string) int {
 	validCount := 0
-	for _, passport := range(passports) {
+	for _, passport := range passports {
 		if isValid(passport, false) {
 			validCount++
 		}
@@ -153,7 +153,7 @@ func part1(passports []string) int {
 
 func part2(passports []string) int {
 	validCount := 0
-	for _, passport := range(passports) {
+	for _, passport := range passports {
 		if isValid(passport, true) {
 			validCount++
 		}
